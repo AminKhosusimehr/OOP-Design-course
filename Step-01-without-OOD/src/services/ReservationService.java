@@ -4,7 +4,7 @@ import constants.Notifier;
 import constants.PaymentMethods;
 
 public class ReservationService {
-    private Notifier notifier = Notifier.EMAIL; //default Notifier
+    // private Notifier notifier = Notifier.EMAIL; //default Notifier
     private PaymentProcessor paymentProcessor = new PaymentProcessor();
 
     public void makeReservation(Reservation res, PaymentMethods paymentType, Notifier notifier){
@@ -24,6 +24,9 @@ public class ReservationService {
                 break;
             case CASH:
                 paymentProcessor.payByCash(res.totalPrice());
+                break;    
+            case PERSON:
+                paymentProcessor.payByPerson(res.totalPrice());
                 break;
         }
 
@@ -36,8 +39,14 @@ public class ReservationService {
        switch (this.notifier){
            case EMAIL :
            EmailSender emailSender = new EmailSender();
-           emailSender.sendEmail(res.customer.email, "Your reservation confirmed!");
+           emailSender.sendMessage(res.customer.email, "Your reservation confirmed!");
            break;
+           case SMS :
+           case SMS:
+           SmsSender smsSender = new SmsSender();
+           smsSender.sendMessage(res.customer.mobile, "Your reservation confirmed!");
+           break;
+
            default:
                System.out.println("There is no Message Provider");
        }
