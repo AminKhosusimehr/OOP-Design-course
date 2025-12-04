@@ -138,6 +138,89 @@ Main
 Directly creates ReservationService without abstraction.
 
 Results in tight coupling.
+# SOLID Refactoring Report
+**Hotel Room Reservation System**
+
+---
+
+## Overview
+This report compares the original hotel reservation system code with the refactored version and explains the actions taken to ensure **SOLID principles** are properly applied. The core functionality of the system has been preserved.
+
+---
+
+## 1. Single Responsibility Principle (SRP)
+
+**Original Code:**  
+- `ReservationService` handled multiple responsibilities: reservation processing, discount application, payment, invoice printing, and notification sending.  
+- SRP was strongly violated.
+
+**Refactored Code:**  
+- `ReservationService` now manages **reservation flow only**.  
+- Payment and notifications are handled by separate classes (`IPaymentProcessor`, `IMessageSender`).  
+- Each class now has a **single responsibility** ✅.
+
+---
+
+## 2. Open/Closed Principle (OCP)
+
+**Original Code:**  
+- Switch statements were used to select payment and notification types.  
+- Adding new methods required modifying existing classes.
+
+**Refactored Code:**  
+- Introduced interfaces for abstraction:
+  - `IPaymentProcessor` → `PayByCard`, `PayByPayPal`, `PayByCash`, `PayByPerson`  
+  - `IMessageSender` → `EmailNotifier`, `SmsNotifier`  
+- `ReservationService` depends only on these interfaces.  
+- New payment or notification types can be added **without modifying existing code** ✅.
+
+---
+
+## 3. Liskov Substitution Principle (LSP)
+
+**Original Code:**  
+- Partially respected: `LuxuryRoom` could replace `Room`.  
+- Adding new subclasses could potentially violate behavior.
+
+**Refactored Code:**  
+- All subclasses of `Room`, `IPaymentProcessor`, and `IMessageSender` can safely replace their base types.  
+- Behavior of the system remains correct regardless of the implementation ✅.
+
+---
+
+## 4. Interface Segregation Principle (ISP)
+
+**Original Code:**  
+- `MessageSender` interface only supported email.  
+- Clients had to depend on irrelevant methods.  
+
+**Refactored Code:**  
+- `IMessageSender` receives the entire `Reservation` object.  
+- Each notifier uses only the information it needs (email or phone).  
+- Interface is now focused and small ✅.
+
+---
+
+## 5. Dependency Inversion Principle (DIP)
+
+**Original Code:**  
+- `ReservationService` directly instantiated concrete classes (`EmailSender`, `PaymentProcessor`).  
+- Tight coupling made testing and extending difficult.
+
+**Refactored Code:**  
+- Dependencies are injected through constructors:
+
+IPaymentProcessor payment = new PayByPayPal();
+IMessageSender notifier = new EmailNotifier();
+ReservationService service = new ReservationService(payment, notifier);
+## 6. Additional Improvements
+
+SMS notification added (SmsSender). Each notifier chooses whether to use email or phone.
+
+Multiple payment methods implemented without modifying ReservationService.
+
+The system is fully extensible for new payment or notification channels without changing existing code.
+
 
 ### ✅ Respected In:
 
