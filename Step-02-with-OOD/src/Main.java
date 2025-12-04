@@ -5,6 +5,8 @@ import constants.Notifier;
 import services.Reservation;
 import models.Room;
 import services.ReservationService;
+import services.paymentMethod;
+import services.MessageSender;
 
 public class Main {
     public static void main(String[] args){
@@ -12,7 +14,10 @@ public class Main {
         Room room = new LuxuryRoom("203", 150);
         Reservation res = new Reservation(room, customer, 2);
 
-        ReservationService service = new ReservationService();
-        service.makeReservation(res, PaymentMethods.PAYPAL, Notifier.EMAIL);
+        IPaymentProcessor payment = new PayByPayPal();
+        IMessageSender notifier = new EmailNotifier();
+
+        ReservationService service = new ReservationService(payment, notifier);
+        service.makeReservation(res);
     }
 }

@@ -25,7 +25,7 @@ public class ReservationService {
             case CASH:
                 paymentProcessor.payByCash(res.totalPrice());
                 break;    
-            case PERSON:
+            case PERSON:i
                 paymentProcessor.payByPerson(res.totalPrice());
                 break;
         }
@@ -41,7 +41,6 @@ public class ReservationService {
            EmailSender emailSender = new EmailSender();
            emailSender.sendMessage(res.customer.email, "Your reservation confirmed!");
            break;
-           case SMS :
            case SMS:
            SmsSender smsSender = new SmsSender();
            smsSender.sendMessage(res.customer.mobile, "Your reservation confirmed!");
