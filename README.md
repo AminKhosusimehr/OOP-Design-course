@@ -1,6 +1,6 @@
 # OOP-Design-course
 
-## ✅ Report of the First Task of the Project
+# ✅ Report of the First Task of the Project
 
 ### 🔔 Changes Made for the New Message Sending Service:
 - Changed the method name in the `MessageSender` interface.
@@ -142,6 +142,7 @@ Results in tight coupling.
 **Hotel Room Reservation System**
 
 ---
+# ✅ Report of the third Task of the Project
 
 ## Overview
 This report compares the original hotel reservation system code with the refactored version and explains the actions taken to ensure **SOLID principles** are properly applied. The core functionality of the system has been preserved.
@@ -209,10 +210,11 @@ This report compares the original hotel reservation system code with the refacto
 
 **Refactored Code:**  
 - Dependencies are injected through constructors:
-
+```java
 IPaymentProcessor payment = new PayByPayPal();
 IMessageSender notifier = new EmailNotifier();
 ReservationService service = new ReservationService(payment, notifier);
+```
 ## 6. Additional Improvements
 
 SMS notification added (SmsSender). Each notifier chooses whether to use email or phone.
