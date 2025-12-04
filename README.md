@@ -340,3 +340,11 @@ IMessageSender notifier = new SmsSender();
 ReservationService service = new ReservationService(payment, notifier);
 ```
 
+# ✅ Report of the Forth Task of the Project
+### As the new code follows solid principles it can now be develoded more easily .
+### As a result , our app is more maintainable and new features can be easily added .
+### Making a simple change in the codebase or adding a new feature will not require a big change in the codebase and 
+### It also will not cause conflicts.
+### 
+### Since the dependency to different parts of the code has been lowered by followig the solid principles , testing 
+### has become easier .
