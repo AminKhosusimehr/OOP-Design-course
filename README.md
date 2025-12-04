@@ -222,7 +222,5 @@ Multiple payment methods implemented without modifying ReservationService.
 The system is fully extensible for new payment or notification channels without changing existing code.
 
 
-### ✅ Respected In:
 
--**`EmailSender` depends on the **`MessageSender` abstraction.
 
