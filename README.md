@@ -223,6 +223,120 @@ Multiple payment methods implemented without modifying ReservationService.
 
 The system is fully extensible for new payment or notification channels without changing existing code.
 
+# ✅ Report of the Forth Task of the Project
+
+# Impact of Applying Object-Oriented Principles from the Beginning
+
+## Comparison Between Original and Refactored Design  
+Hotel Room Reservation System
+
+This section explains **how many of the changes made in the first development step could have been avoided** if SOLID principles had been applied from the beginning, and **how many changes would actually be required** to add the two new features:
+
+- ✅ Onsite Payment (Cash / In-Person)
+- ✅ SMS Notification
+
+---
+
+## 1. Problems in the Original Design
+
+In the original version of the project:
+
+- `ReservationService` directly created:
+  - `PaymentProcessor`
+  - `EmailSender`
+- Payment logic was implemented using a `switch` statement.
+- Notification logic was also implemented using a `switch` statement.
+- `MessageSender` interface was tightly coupled to **email only**.
+- Dependencies were **not injected**.
+- Adding a new payment or message type **required modifying multiple existing classes**.
+
+This caused violations of:
+- ❌ SRP
+- ❌ OCP
+- ❌ ISP
+- ❌ DIP
+
+---
+
+## 2. Changes That Were Made in Step One
+
+To add these two new features:
+- Onsite Payment
+- SMS Notification
+
+The following changes were required in the original design:
+
+1. **Renaming methods in `MessageSender` and `EmailSender`**
+2. **Adding a new `SmsSender` class**
+3. **Modifying `ReservationService` to dynamically select the notifier**
+4. **Adding a new payment method inside `PaymentProcessor`**
+5. **Modifying the payment `switch` inside `ReservationService`**
+
+✅ Total changes required in the original design:  
+**5 separate modifications**
+
+---
+
+## 3. If SOLID Had Been Applied From the Beginning
+
+If the system had originally followed SOLID principles:
+
+- `ReservationService` would depend only on:
+  - `IPaymentProcessor`
+  - `IMessageSender`
+- All dependencies would be injected via constructor.
+- No `switch` statements would exist for:
+  - Payment selection
+  - Message sending
+- Each payment and notification type would be implemented as a **separate class**.
+
+### As a Result:
+
+✅ The following changes would have been completely **unnecessary**:
+
+- Renaming methods in `MessageSender`
+- Modifying `ReservationService` logic
+- Adding new `switch` cases
+- Changing existing payment logic
+
+➡️ **At least 3 to 4 changes from Step One would have been avoided.**
+
+---
+
+## 4. How Many Changes Would Be Needed With Proper SOLID Design?
+
+With a correct SOLID-based design, adding the two new features would require only:
+
+### 1. Onsite Payment:
+```java
+class PayByPerson implements IPaymentProcessor {
+    public void pay(double amount) {
+        System.out.println("Paid in person: " + amount);
+    }
+}
+```
+### 2. SMS Notification:
+class SmsSender implements IMessageSender {
+    public void sendMessage(Reservation reservation) {
+        System.out.println("Sending SMS to " + reservation.customer.mobile);
+    }
+}
 
 
+✅ No changes to:
+
+`ReservationService`
+
+`MessageSender`
+
+`Existing payment classes`
+
+`Existing notifiers`
+
+✅ Only injection in Main:
+```java
+IPaymentProcessor payment = new PayByPerson();
+IMessageSender notifier = new SmsSender();
+ReservationService service = new ReservationService(payment, notifier);
+```
 
