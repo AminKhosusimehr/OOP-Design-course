@@ -348,3 +348,6 @@ ReservationService service = new ReservationService(payment, notifier);
 ### 
 ### Since the dependency to different parts of the code has been lowered by followig the solid principles , testing 
 ### has become easier .
+
+
+# I have used AI to write this report . 
